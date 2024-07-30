@@ -7,7 +7,7 @@
   "registries": [
     {
       "kind": "git",
-      "repository": "https://github.com/skaginn3x/vcpkg-registry",
+      "repository": "https://github.com/centroid-is/vcpkg-registry",
       "baseline": "1fdcdb95a02b35164c459fbd40f609a62c4cb1ed",
       "packages": [
         "sdbusplus"
@@ -15,6 +15,6 @@
     }
   ],
   "overlay-triplets": [
-    "./cmake/vcpkg-triplets"
+    "./vcpkg-overlays/triplets"
   ]
 }
