@@ -5,6 +5,12 @@ set(Boost_NO_WARN_NEW_VERSIONS 1)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+find_program(CCACHE_FOUND ccache)
+if (CCACHE_FOUND)
+  set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
+  set(CMAKE_C_COMPILER_LAUNCHER ccache)
+endif ()
+
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   if(CMAKE_BUILD_TYPE STREQUAL "Release")
     add_compile_options( -flto=thin )
