@@ -1,6 +1,6 @@
 project = 'TFC Framework'
-copyright = '2023, Skaginn3X'
-author = 'Skaginn3X'
+copyright = '2024, Centroid'
+author = 'Centroid'
 
 extensions = [ "breathe", "myst_parser" ]
 breathe_default_project = "tfc"
