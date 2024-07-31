@@ -15,6 +15,11 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   if(CMAKE_BUILD_TYPE STREQUAL "Release")
     add_compile_options( -flto=thin )
   endif()
+  # Enums are non compilable when Weverything is enabled
+  # https://github.com/llvm/llvm-project/issues/81354
+  add_compile_options(
+    -Wno-switch-default
+  )
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
