@@ -28,6 +28,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
       -Wno-error=null-dereference
       -Wno-error=maybe-uninitialized
       -Wno-error=stringop-overflow
+      -Wno-error=free-nonheap-object
     )
   endif ()
 endif()
