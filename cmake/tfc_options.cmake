@@ -2,11 +2,11 @@ include(FeatureSummary)
 
 # Use option BUILD_TESTING to disable tests
 
-set(TFC_DBUS_DOMAIN "com" CACHE STRING "D-Bus domain, for example 'com' or 'org'")
+set(TFC_DBUS_DOMAIN "is" CACHE STRING "D-Bus domain, for example 'com' or 'org'")
 add_feature_info("TFC_DBUS_DOMAIN" TFC_DBUS_DOMAIN "D-Bus domain, for example 'com' or 'org',
   Current value: '${TFC_DBUS_DOMAIN}'")
 
-set(TFC_DBUS_ORGANIZATION "skaginn3x" CACHE STRING "D-Bus organization, for example 'freedesktop'")
+set(TFC_DBUS_ORGANIZATION "centroid" CACHE STRING "D-Bus organization, for example 'freedesktop'")
 add_feature_info("TFC_DBUS_ORGANIZATION" TFC_DBUS_ORGANIZATION "D-Bus organization, for example 'freedesktop'.
   Current value: '${TFC_DBUS_ORGANIZATION}'")
 
