@@ -6,22 +6,15 @@ set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR aarch64)
 
 # Name of C compiler.
-find_program(GCC-13 "aarch64-linux-gnu-gcc-13")
-if (GCC-13)
-set(CMAKE_C_COMPILER "/usr/bin/aarch64-linux-gnu-gcc-13")
-set(CMAKE_CXX_COMPILER "/usr/bin/aarch64-linux-gnu-g++-13")
-else ()
-set(CMAKE_C_COMPILER "/usr/bin/aarch64-linux-gnu-gcc")
-set(CMAKE_CXX_COMPILER "/usr/bin/aarch64-linux-gnu-g++")
-endif ()
+set(CMAKE_C_COMPILER "/cpproot/bin/aarch64-linux-gnu-gcc")
+set(CMAKE_CXX_COMPILER "/cpproot/bin/aarch64-linux-gnu-g++")
 
 # Where to look for the target environment. (More paths can be added here)
-set(CMAKE_FIND_ROOT_PATH /usr/aarch64-linux-gnu)
-set(CMAKE_INCLUDE_PATH  /usr/include/aarch64-linux-gnu)
-set(CMAKE_LIBRARY_PATH  /usr/lib/aarch64-linux-gnu)
-set(CMAKE_PROGRAM_PATH  /usr/bin/aarch64-linux-gnu)
-set(CMAKE_AR /usr/bin/aarch64-linux-gnu-ar)
-set(CMAKE_STRIP /usr/bin/aarch64-linux-gnu-strip)
+set(CMAKE_FIND_ROOT_PATH /cpproot/aarch64-linux-gnu)
+set(CMAKE_INCLUDE_PATH  /cpproot/include/aarch64-linux-gnu)
+set(CMAKE_LIBRARY_PATH  /cpproot/lib/aarch64-linux-gnu)
+set(CMAKE_AR /cpproot/bin/aarch64-linux-gnu-ar)
+set(CMAKE_STRIP /cpproot/bin/aarch64-linux-gnu-strip)
 
 # Adjust the default behavior of the FIND_XXX() commands:
 # search programs in the host environment only.
