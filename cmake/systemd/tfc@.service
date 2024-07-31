@@ -11,6 +11,12 @@ LimitNOFILE=8192
 User=tfc
 Restart=always
 RestartSec=1s
+RuntimeDirectory=tfc
+RuntimeDirectoryPreserve=yes
+ConfigurationDirectory=tfc
+PrivateTmp=true
+# Cannot be set to full or strict, requires access to /etc/tfc to facilitate configuration changes
+ProtectSystem=yes
 
 [Install]
 WantedBy=multi-user.target
