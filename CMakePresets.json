@@ -6,7 +6,7 @@
   ],
   "configurePresets": [
     {
-      "name": "ci-gcc-debug-dynamic",
+      "name": "gcc-debug-dynamic",
       "description": "Used for developing purposes",
       "generator": "Ninja",
       "cacheVariables": {
@@ -19,7 +19,7 @@
       ]
     },
     {
-      "name": "ci-clang-debug-dynamic",
+      "name": "clang-debug-dynamic",
       "description": "Used for developing purposes",
       "generator": "Ninja",
       "cacheVariables": {
@@ -32,7 +32,7 @@
       ]
     },
     {
-      "name": "ci-clang-debug",
+      "name": "clang-debug",
       "generator": "Ninja",
       "inherits": [
         "cfg-vcpkg-clang",
@@ -41,7 +41,7 @@
       ]
     },
     {
-      "name": "ci-clang-release",
+      "name": "clang-release",
       "generator": "Ninja",
       "inherits": [
         "cfg-vcpkg-clang",
@@ -50,7 +50,7 @@
       ]
     },
     {
-      "name": "ci-gcc-release",
+      "name": "gcc-release",
       "generator": "Ninja",
       "inherits": [
         "cfg-vcpkg",
@@ -59,7 +59,7 @@
       ]
     },
     {
-      "name": "ci-gcc-debug",
+      "name": "gcc-debug",
       "generator": "Ninja",
       "inherits": [
         "cfg-vcpkg",
@@ -70,7 +70,7 @@
     {
       "name": "pack-gcc-debug",
       "inherits": [
-        "ci-gcc-debug",
+        "gcc-debug",
         "cfg-enable-docs",
         "cfg-enable-static"
       ],
@@ -82,13 +82,14 @@
     {
       "name": "pack-gcc-release",
       "inherits": [
-        "ci-gcc-release",
+        "gcc-release",
         "cfg-enable-docs",
         "cfg-enable-static"
       ],
       "cacheVariables": {
         "BUILD_TESTING": "OFF",
-        "BUILD_EXAMPLES": "OFF"
+        "BUILD_EXAMPLES": "OFF",
+        "ENABLE_DEBUG_SYMBOLS_IN_RELEASE": "ON"
       }
     },
     {
@@ -112,44 +113,46 @@
   ],
   "buildPresets": [
     {
-      "name": "build-ci-clang-debug-dynamic",
-      "configurePreset": "ci-clang-debug-dynamic"
+      "name": "clang-debug-dynamic",
+      "configurePreset": "clang-debug-dynamic"
     },
     {
-      "name": "build-ci-gcc-debug-dynamic",
-      "configurePreset": "ci-gcc-debug-dynamic"
+      "name": "gcc-debug-dynamic",
+      "configurePreset": "gcc-debug-dynamic"
     },
     {
-      "name": "build-ci-clang-debug",
-      "configurePreset": "ci-clang-debug"
+      "name": "clang-debug",
+      "configurePreset": "clang-debug"
     },
     {
-      "name": "build-ci-clang-release",
-      "configurePreset": "ci-clang-release"
+      "name": "clang-release",
+      "configurePreset": "clang-release"
     },
     {
-      "name": "build-ci-gcc-debug",
-      "configurePreset": "ci-gcc-debug"
+      "name": "gcc-debug",
+      "configurePreset": "gcc-debug"
     },
     {
-      "name": "build-ci-gcc-release",
-      "configurePreset": "ci-gcc-release"
+      "name": "gcc-release",
+      "configurePreset": "gcc-release"
     },
     {
-      "name": "build-pack-gcc-debug",
+      "name": "pack-gcc-debug",
       "configurePreset": "pack-gcc-debug"
     },
     {
-      "name": "build-pack-gcc-release",
-      "configurePreset": "pack-gcc-release"
+      "name": "pack-gcc-release",
+      "configurePreset": "pack-gcc-release",
+      "jobs": 1
     },
     {
-      "name": "build-pack-aarch64-gcc-debug",
+      "name": "pack-aarch64-gcc-debug",
       "configurePreset": "pack-aarch64-gcc-debug"
     },
     {
-      "name": "build-pack-aarch64-gcc-release",
-      "configurePreset": "pack-aarch64-gcc-release"
+      "name": "pack-aarch64-gcc-release",
+      "configurePreset": "pack-aarch64-gcc-release",
+      "jobs": 1
     },
     {
       "name": "build-docs",
@@ -162,77 +165,77 @@
   ],
   "testPresets": [
     {
-      "name": "test-common",
+      "name": "common",
       "hidden": true,
-      "output": {"outputOnFailure": true},
-      "execution": {"noTestsAction": "error", "stopOnFailure": true}
+      "output": {"outputOnFailure": true, "outputJUnitFile": "test-results.xml"},
+      "execution": {"noTestsAction": "error"}
     },
     {
-      "name": "test-ci-clang-debug-dynamic",
-      "configurePreset": "ci-clang-debug-dynamic",
-      "inherits": ["test-common"]
+      "name": "clang-debug-dynamic",
+      "configurePreset": "clang-debug-dynamic",
+      "inherits": ["common"]
     },
     {
-      "name": "test-ci-gcc-debug-dynamic",
-      "configurePreset": "ci-gcc-debug-dynamic",
-      "inherits": ["test-common"]
+      "name": "gcc-debug-dynamic",
+      "configurePreset": "gcc-debug-dynamic",
+      "inherits": ["common"]
     },
     {
-      "name": "test-ci-clang-debug",
-      "configurePreset": "ci-clang-debug",
-      "inherits": ["test-common"]
+      "name": "clang-debug",
+      "configurePreset": "clang-debug",
+      "inherits": ["common"]
     },
     {
-      "name": "test-ci-clang-release",
-      "configurePreset": "ci-clang-release",
-      "inherits": ["test-common"]
+      "name": "clang-release",
+      "configurePreset": "clang-release",
+      "inherits": ["common"]
     },
     {
-      "name": "test-ci-gcc-debug",
-      "configurePreset": "ci-gcc-debug",
-      "inherits": ["test-common"]
+      "name": "gcc-debug",
+      "configurePreset": "gcc-debug",
+      "inherits": ["common"]
     },
     {
-      "name": "test-ci-gcc-release",
-      "configurePreset": "ci-gcc-release",
-      "inherits": ["test-common"]
-    },
-    {
-      "name": "test-pack-gcc-debug",
-      "configurePreset": "pack-gcc-debug",
-      "inherits": ["test-common"]
-    },
-    {
-      "name": "test-pack-gcc-release",
-      "configurePreset": "pack-gcc-release",
-      "inherits": ["test-common"]
-    }
-  ],
-  "packagePresets": [
-    {
-      "name": "pack-linux-common",
-      "hidden": true,
-      "generators": [ "TGZ", "DEB", "RPM" ]
+      "name": "gcc-release",
+      "configurePreset": "gcc-release",
+      "inherits": ["common"]
     },
     {
       "name": "pack-gcc-debug",
       "configurePreset": "pack-gcc-debug",
-      "inherits": [ "pack-linux-common" ]
+      "inherits": ["common"]
     },
     {
       "name": "pack-gcc-release",
       "configurePreset": "pack-gcc-release",
-      "inherits": [ "pack-linux-common" ]
+      "inherits": ["common"]
+    }
+  ],
+  "packagePresets": [
+    {
+      "name": "linux-common",
+      "hidden": true,
+      "generators": [ "TGZ", "DEB", "RPM" ]
     },
     {
-      "name": "pack-aarch64-gcc-debug",
+      "name": "gcc-debug",
+      "configurePreset": "pack-gcc-debug",
+      "inherits": [ "linux-common" ]
+    },
+    {
+      "name": "gcc-release",
+      "configurePreset": "pack-gcc-release",
+      "inherits": [ "linux-common" ]
+    },
+    {
+      "name": "aarch64-gcc-debug",
       "configurePreset": "pack-aarch64-gcc-debug",
-      "inherits": [ "pack-linux-common" ]
+      "inherits": [ "linux-common" ]
     },
     {
-      "name": "pack-aarch64-gcc-release",
+      "name": "aarch64-gcc-release",
       "configurePreset": "pack-aarch64-gcc-release",
-      "inherits": [ "pack-linux-common" ]
+      "inherits": [ "linux-common" ]
     }
   ],
   "workflowPresets": [
@@ -250,7 +253,7 @@
       ]
     },
     {
-      "name": "packflow-x86_64-gcc-debug",
+      "name": "x86_64-gcc-debug",
       "steps": [
         {
           "type": "configure",
@@ -258,16 +261,16 @@
         },
         {
           "type": "build",
-          "name": "build-pack-gcc-debug"
-        },
-        {
-          "type": "package",
           "name": "pack-gcc-debug"
+        },
+        {
+          "type": "package",
+          "name": "gcc-debug"
         }
       ]
     },
     {
-      "name": "packflow-x86_64-gcc-release",
+      "name": "x86_64-gcc-release",
       "steps": [
         {
           "type": "configure",
@@ -275,16 +278,16 @@
         },
         {
           "type": "build",
-          "name": "build-pack-gcc-release"
-        },
-        {
-          "type": "package",
           "name": "pack-gcc-release"
+        },
+        {
+          "type": "package",
+          "name": "gcc-release"
         }
       ]
     },
     {
-      "name": "packflow-aarch64-gcc-debug",
+      "name": "aarch64-gcc-debug",
       "steps": [
         {
           "type": "configure",
@@ -292,16 +295,16 @@
         },
         {
           "type": "build",
-          "name": "build-pack-aarch64-gcc-debug"
+          "name": "pack-aarch64-gcc-debug"
         },
         {
           "type": "package",
-          "name": "pack-aarch64-gcc-debug"
+          "name": "aarch64-gcc-debug"
         }
       ]
     },
     {
-      "name": "packflow-aarch64-gcc-release",
+      "name": "aarch64-gcc-release",
       "steps": [
         {
           "type": "configure",
@@ -309,11 +312,11 @@
         },
         {
           "type": "build",
-          "name": "build-pack-aarch64-gcc-release"
+          "name": "pack-aarch64-gcc-release"
         },
         {
           "type": "package",
-          "name": "pack-aarch64-gcc-release"
+          "name": "aarch64-gcc-release"
         }
       ]
     }
