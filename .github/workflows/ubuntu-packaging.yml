@@ -23,7 +23,7 @@ jobs:
   build:
     name: ubuntu packaging
     runs-on: ubuntu-22.04
-    container: ghcr.io/centroid-is/centroid-is/framework/tfc-runtime:latest
+    container: ghcr.io/centroid-is/centroid-is/framework/tfc-toolchain:latest
     strategy:
       fail-fast: false
       matrix:
