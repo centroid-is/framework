@@ -3,14 +3,6 @@ set(VCPKG_CRT_LINKAGE dynamic)
 set(VCPKG_LIBRARY_LINKAGE dynamic)
 set(VCPKG_CMAKE_SYSTEM_NAME Linux)
 
-set(CMAKE_C_COMPILER gcc)
-set(CMAKE_CXX_COMPILER g++)
-set(CMAKE_C_FLAGS "")
-set(LINK_FLAGS "")
-
-set(ENV{CC} gcc)
-set(ENV{CXX} g++)
-set(ENV{CFLAGS} "")
-set(ENV{LDFLAGS} "")
+include("${CMAKE_CURRENT_LIST_DIR}/../toolchains/x64-linux-gcc.cmake")
 
 set(VCPKG_FIXUP_ELF_RPATH ON)
