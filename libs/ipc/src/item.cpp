@@ -30,14 +30,18 @@ auto make() -> item {
 auto item::from_json(std::string_view json) -> std::expected<item, glz::error_ctx> {
   auto temporary = glz::read_json<item>(json);
   if (!temporary.has_value()) {
-    return temporary;
+    return std::unexpected(std::move(temporary.error()));
   }
   // We are reciving this item, update exchange
   temporary->last_exchange = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
-  return temporary;
+  return std::expected<item, glz::error_ctx>(std::move(temporary.value()));
 }
 auto item::to_json() const -> std::expected<std::string, glz::error_ctx> {
-  return glz::write_json(*this);
+  auto temporary = glz::write_json(*this);
+  if (!temporary.has_value()) {
+    return std::unexpected(std::move(temporary.error()));
+  }
+  return std::expected<std::string, glz::error_ctx>(std::move(temporary.value()));
 }
 auto item::id() const -> std::string {
   if (item_id.has_value()) {
