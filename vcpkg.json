@@ -66,7 +66,7 @@
     { "name": "mp-units", "version": "2.2.1" },
     { "name": "glaze", "version": "2.9.2" },
     { "name": "fmt", "version": "10.2.1", "port-version": 2 },
-    { "name": "async-mqtt", "version": "8.0.0" },
+    { "name": "async-mqtt", "version": "4.0.0" },
     { "name": "openssl", "version": "3.3.1" }
   ]
 }
