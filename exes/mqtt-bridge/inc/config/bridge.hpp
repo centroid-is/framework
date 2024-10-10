@@ -69,18 +69,16 @@ struct glz::meta<tfc::mqtt::structs::ssl_active_e> {
 };
 
 template <>
-struct glz::detail::to_json_schema<tfc::mqtt::config::signal_name> {
+struct tfc::json::detail::to_json_schema<tfc::mqtt::config::signal_name> {
   template <auto Opts>
   static void op(auto& s, auto&) noexcept {
     if (!s.oneOf.has_value()) {
       s.oneOf = std::vector<schematic>{};
     }
-    // fix in https://github.com/Skaginn3x/framework/issues/555
-    // attributes was added initially
-    // for (auto const& signal : tfc::global::get_signals()) {
-    //   s.oneOf.value().push_back(schematic{
-    //       .attributes{ schema{ .title = signal.name, .description = signal.description, .constant = signal.name } } });
-    // }
+    for (auto const& signal : global::get_signals()) {
+      s.oneOf.value().push_back(schematic{
+          .attributes{ schema{ .title = signal.name, .description = signal.description, .constant = signal.name } } });
+    }
   }
 };
 

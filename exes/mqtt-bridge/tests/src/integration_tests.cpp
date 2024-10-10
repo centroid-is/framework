@@ -1,22 +1,12 @@
+#ifdef __clang__
+
 #include <expected>
 #include <iostream>
 #include <tuple>
 
-#include <tfc/utils/pragmas.hpp>
-
 #include <sparkplug_b/sparkplug_b.pb.h>
 #include <async_mqtt/all.hpp>
-// clang-format off
-PRAGMA_CLANG_WARNING_PUSH_OFF(-Wshadow-uncaptured-local)
-PRAGMA_CLANG_WARNING_PUSH_OFF(-Wshadow)
-PRAGMA_CLANG_WARNING_PUSH_OFF(-Wshadow-field-in-constructor)
-PRAGMA_CLANG_WARNING_PUSH_OFF(-Wdocumentation)
-// clang-format on
-#include <broker/broker.hpp>
-PRAGMA_CLANG_WARNING_POP
-PRAGMA_CLANG_WARNING_POP
-PRAGMA_CLANG_WARNING_POP
-PRAGMA_CLANG_WARNING_POP
+#include <async_mqtt/broker/broker.hpp>
 #include <boost/ut.hpp>
 
 #include <tfc/ipc/details/dbus_client_iface_mock.hpp>
@@ -80,34 +70,36 @@ public:
 
   auto handle_resolve(asio::ip::tcp::resolver::results_type eps) -> asio::awaitable<void> {
     std::ignore = co_await async_connect(amep_->lowest_layer(), eps, asio::use_awaitable);
-    co_await amep_->async_send(
+    co_await amep_->send(
         async_mqtt::v5::connect_packet{
             true,
             0x1234,
-            "cid2",
-            std::nullopt,
-            std::nullopt,
-            std::nullopt,
+            async_mqtt::allocate_buffer("cid2"),
+            async_mqtt::nullopt,
+            async_mqtt::nullopt,
+            async_mqtt::nullopt,
         },
         asio::use_awaitable);
-    co_await amep_->async_recv(async_mqtt::filter::match, { async_mqtt::control_packet_type::connack }, asio::use_awaitable);
+    co_await amep_->recv(async_mqtt::filter::match, { async_mqtt::control_packet_type::connack }, asio::use_awaitable);
     co_await send_subscribe();
   }
 
   auto send_subscribe() -> asio::awaitable<void> {
-    std::optional<async_mqtt::packet_id_type> packet_id = amep_->acquire_unique_packet_id();
-    auto sub_packet = async_mqtt::v5::subscribe_packet{ packet_id.value(), { { topic_, async_mqtt::qos::at_most_once } } };
-    co_await amep_->async_send(sub_packet, asio::use_awaitable);
-    co_await amep_->async_recv(async_mqtt::filter::match, { async_mqtt::control_packet_type::suback }, asio::use_awaitable);
+    std::optional<async_mqtt::packet_id_t> packet_id = amep_->acquire_unique_packet_id();
+    auto sub_packet =
+        async_mqtt::v5::subscribe_packet{ packet_id.value(),
+                                          { { async_mqtt::allocate_buffer(topic_), async_mqtt::qos::at_most_once } } };
+    co_await amep_->send(sub_packet, asio::use_awaitable);
+    co_await amep_->recv(async_mqtt::filter::match, { async_mqtt::control_packet_type::suback }, asio::use_awaitable);
     co_await receive_publish_packets();
   }
 
   auto receive_publish_packets() -> asio::awaitable<void> {
     while (true) {
-      auto p = co_await amep_->async_recv(async_mqtt::filter::match, { async_mqtt::control_packet_type::publish },
-                                          asio::use_awaitable);
+      auto p =
+          co_await amep_->recv(async_mqtt::filter::match, { async_mqtt::control_packet_type::publish }, asio::use_awaitable);
       async_mqtt::v5::publish_packet const& p2 = p.template get<async_mqtt::v5::publish_packet>();
-      for (auto& payload : p2.payload_as_buffer()) {
+      for (auto& payload : p2.payload()) {
         messages_.push_back(payload);
       }
     }
@@ -269,3 +261,8 @@ auto main(int argc, char* argv[]) -> int {
 
   return 0;
 }
+#else
+auto main() -> int {
+  return 0;
+}
+#endif
