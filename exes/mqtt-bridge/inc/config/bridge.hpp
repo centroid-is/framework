@@ -75,12 +75,10 @@ struct glz::detail::to_json_schema<tfc::mqtt::config::signal_name> {
     if (!s.oneOf.has_value()) {
       s.oneOf = std::vector<schematic>{};
     }
-    // fix in https://github.com/Skaginn3x/framework/issues/555
-    // attributes was added initially
-    // for (auto const& signal : tfc::global::get_signals()) {
-    //   s.oneOf.value().push_back(schematic{
-    //       .attributes{ schema{ .title = signal.name, .description = signal.description, .constant = signal.name } } });
-    // }
+    for (auto const& signal : tfc::global::get_signals()) {
+      s.oneOf.value().push_back(schematic{
+          .attributes{ schema{ .title = signal.name, .description = signal.description, .constant = signal.name } } });
+    }
   }
 };
 
