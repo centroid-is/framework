@@ -13,7 +13,7 @@ namespace tfc::motor::dbus {
 namespace detail {
 static constexpr std::string_view path_postfix{ "Motors" };
 static constexpr std::string_view service{ "Ethercat" };
-static constexpr std::string_view atv320{ "ATV320" };
+static constexpr std::string_view atv320{ "atv320" };
 }  // namespace detail
 
 static constexpr std::string_view service_name{ tfc::dbus::const_dbus_name<detail::service> };
