@@ -32,5 +32,5 @@ else()
 endif()
 
 if(ENABLE_STATIC_LINKING)
-  add_link_options(-static-libstdc++ -static-libgcc)
+  add_link_options(-static -static-libstdc++ -static-libgcc)
 endif ()
