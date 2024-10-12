@@ -104,6 +104,10 @@
     {
       "name": "pack-aarch64-gcc-release",
       "generator": "Ninja",
+      "cacheVariables": {
+        "TFC_DBUS_DOMAIN": "com",
+        "TFC_DBUS_ORGANIZATION": "skaginn3x"
+      },
       "inherits": [
         "cfg-vcpkg-aarch64",
         "pack-gcc-release",
