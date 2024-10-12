@@ -261,7 +261,7 @@ public:
   static constexpr auto errors_to_auto_reset = std::array{ lft_e::no_fault, lft_e::cnf };
 
   auto pdo_error() noexcept -> void {
-    if (no_data_) {
+    if (!no_data_) {
       input_t status{ .status_word = cia_402::status_word{ .state_fault = true },
                       .frequency = 0 * dHz,
                       .current = 0,
@@ -271,7 +271,7 @@ public:
       transmit_status(status);
       dbus_iface_.update_status(status);
       ctrl_.update_status(status);
-      this->logger_.error("Frequency drive lost contact");
+      this->logger_.error("Frequency drive {} lost contact", this->slave_index_);
     }
     no_data_ = true;
   }
