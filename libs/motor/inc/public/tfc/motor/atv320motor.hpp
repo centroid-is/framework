@@ -86,7 +86,8 @@ private:
       // todo invalid request descriptor is a known error, but we should handle it better
       // it is when the interface name (motor) is not existent
       auto const now{ std::chrono::steady_clock::now() };
-      logger_.error("DBus ping response error: {}, time since ping: {}", err.message(), std::chrono::duration_cast<std::chrono::milliseconds>(now - last_ping_));
+      logger_.error("DBus ping response error: {}, time since ping: {}", err.message(),
+                    std::chrono::duration_cast<std::chrono::milliseconds>(now - last_ping_));
       response = false;
     }
     connected_ = response;

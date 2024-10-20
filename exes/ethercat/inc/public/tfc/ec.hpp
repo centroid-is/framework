@@ -229,7 +229,7 @@ private:
     if (first_iteration) {
       timer->expires_after(std::chrono::microseconds(0));
     } else {
-      auto sleep_time = ec::common::cycle_time() - (std::chrono::high_resolution_clock::now() - cycle_start_);
+      auto sleep_time = config_->cycle_time - (std::chrono::high_resolution_clock::now() - cycle_start_);
       timer->expires_after(sleep_time);
     }
     cycle_start_with_sleep_ = std::chrono::high_resolution_clock::now();
