@@ -14,6 +14,10 @@ How would one ask, the framework offers an API which simplifies communication be
 The IPC ruler distinguishes from every other executable, as it is needed to use the communication layer. 
 So this is the one daemon that you would need to start to make your process run.
 
+## Nixos
+
+Enter the shell and run `cmake -DCMAKE_TOOLCHAIN_FILE=$CMAKE_TOOLCHAIN_FILE --preset gcc-release` for example.
+
 ## Prerequisites
 
 We have many dependencies on other open source software stacks. 
