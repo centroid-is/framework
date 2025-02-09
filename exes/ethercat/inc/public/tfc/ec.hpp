@@ -242,7 +242,7 @@ private:
       return;
     }
     int32_t last_wkc = wkc_;
-    wkc_ = processdata(microseconds{ 100 });
+    wkc_ = processdata(microseconds{ 500 });
     if (wkc_ < expected_wkc_ && wkc_ != last_wkc) {  // Don't wot over an already logged fault.
       logger_.warn("Working counter got {} expected {}", wkc_, expected_wkc_);
     }
