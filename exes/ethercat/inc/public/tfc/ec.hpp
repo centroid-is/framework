@@ -245,7 +245,8 @@ private:
     wkc_ = processdata(microseconds{ 1000 });
     if (wkc_ < expected_wkc_ && wkc_ != last_wkc) {  // Don't wot over an already logged fault.
       last_cycle_with_sleep_ = std::chrono::high_resolution_clock::now() - cycle_start_with_sleep_;
-      logger_.warn("Working counter got {} expected {}, processdata recv took: {}", wkc_, expected_wkc_, last_cycle_with_sleep_);
+      logger_.warn("Working counter got {} expected {}, processdata recv took: {}", wkc_, expected_wkc_,
+                   last_cycle_with_sleep_);
     }
     while (ecx_iserror(&context_) != 0U) {
       logger_.error("Ethercat context error: {}", ecx_elist2string(&context_));
