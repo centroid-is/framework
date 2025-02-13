@@ -42,10 +42,13 @@ namespace tfc::ec::config {
 struct ethercat {
   network_interface primary_interface{ common::get_interfaces().at(0) };
   confman::observable<std::optional<std::size_t>> required_slave_count{ std::nullopt };
+  std::chrono::microseconds cycle_time{ std::chrono::milliseconds{ 1 } };
   struct glaze {
     // clang-format off
     static constexpr auto value{ glz::object("primary_interface", &ethercat::primary_interface, "Primary interface",
-                                             "required_slave_count", &ethercat::required_slave_count, "Required slave count") };
+                                             "required_slave_count", &ethercat::required_slave_count, "Required slave count",
+                                             "cycle_time", &ethercat::cycle_time, "The scan time for the ethercat network, between each poll."
+                                             ) };
     // clang-format on
     static constexpr std::string_view name{ "config::ethercat" };
   };

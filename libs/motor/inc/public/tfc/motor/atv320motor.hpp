@@ -70,8 +70,9 @@ private:
 
   asio::io_context& ctx_;
   asio::steady_timer ping_{ ctx_ };
-  static constexpr std::chrono::milliseconds ping_interval{ 250 };
-  static constexpr std::chrono::microseconds ping_response_timeout{ std::chrono::milliseconds{ 200 } };
+  // todo try to make this smaller, but still enough to not trigger dbus timeout
+  static constexpr std::chrono::milliseconds ping_interval{ 2500 };
+  static constexpr std::chrono::microseconds ping_response_timeout{ std::chrono::milliseconds{ 2000 } };
   std::shared_ptr<sdbusplus::asio::connection> connection_;
   uint16_t slave_id_{ 0 };
   logger::logger logger_{ fmt::format("{}.{}", impl_name, slave_id_) };
@@ -85,7 +86,8 @@ private:
       // todo invalid request descriptor is a known error, but we should handle it better
       // it is when the interface name (motor) is not existent
       auto const now{ std::chrono::steady_clock::now() };
-      logger_.error("DBus ping response error: {}, time since ping: {}", err.message(), now - last_ping_);
+      logger_.error("DBus ping response error: {}, time since ping: {}", err.message(),
+                    std::chrono::duration_cast<std::chrono::milliseconds>(now - last_ping_));
       response = false;
     }
     connected_ = response;

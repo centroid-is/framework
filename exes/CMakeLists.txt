@@ -1,6 +1,5 @@
 add_subdirectory(ethercat)
 add_subdirectory(button)
-add_subdirectory(gpio)
 add_subdirectory(operations)
 add_subdirectory(tfcctl)
 add_subdirectory(ipc-ruler)

@@ -21,12 +21,6 @@
       "version>=": "2.6.4"
     },
     "gtest",
-    {
-      "name": "libgpiod",
-      "features": [
-        "cxx-bindings"
-      ]
-    },
     "magic-enum",
     {
       "name": "mp-units",

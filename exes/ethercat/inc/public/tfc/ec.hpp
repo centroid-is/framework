@@ -229,7 +229,7 @@ private:
     if (first_iteration) {
       timer->expires_after(std::chrono::microseconds(0));
     } else {
-      auto sleep_time = ec::common::cycle_time() - (std::chrono::high_resolution_clock::now() - cycle_start_);
+      auto sleep_time = config_->cycle_time - (std::chrono::high_resolution_clock::now() - cycle_start_);
       timer->expires_after(sleep_time);
     }
     cycle_start_with_sleep_ = std::chrono::high_resolution_clock::now();
@@ -242,9 +242,10 @@ private:
       return;
     }
     int32_t last_wkc = wkc_;
-    wkc_ = processdata(microseconds{ 100 });
+    wkc_ = processdata(microseconds{ 1000 });
     if (wkc_ < expected_wkc_ && wkc_ != last_wkc) {  // Don't wot over an already logged fault.
-      logger_.warn("Working counter got {} expected {}", wkc_, expected_wkc_);
+      last_cycle_with_sleep_ = std::chrono::high_resolution_clock::now() - cycle_start_with_sleep_;
+      logger_.warn("Working counter got {} expected {}, processdata recv took: {}", wkc_, expected_wkc_, last_cycle_with_sleep_);
     }
     while (ecx_iserror(&context_) != 0U) {
       logger_.error("Ethercat context error: {}", ecx_elist2string(&context_));
