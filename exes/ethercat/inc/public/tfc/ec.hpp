@@ -43,6 +43,7 @@ public:
 
   explicit context_t(boost::asio::io_context& ctx) : ctx_(ctx), client_(ctx_) {
     dbus_->request_name(dbus::make_dbus_name(dbus_name).c_str());
+    port_.redport = &redundant_port_data_;
     context_.userdata = static_cast<void*>(this);
     context_.port = &port_;
     context_.slavecount = &slave_count_;
@@ -165,9 +166,17 @@ public:
    */
   auto async_start() -> std::error_code {
     /// Config might have changed since last run
-    if (!ecx::init(&context_, config_->primary_interface.value)) {
-      // TODO: switch for error_code
-      throw std::runtime_error(fmt::format("Failed to connect to interface: {}", config_->primary_interface.value));
+    if (config_->redundant_interface.has_value()) {
+      if (ecx_init_redundant(&context_, &redundant_port_data_, config_->primary_interface.value.data(),
+                             const_cast<char*>(config_->redundant_interface->value.data())) <= 0) {
+        // TODO: switch for error_code
+        throw std::runtime_error(fmt::format("Failed to connect to interface: {}", config_->primary_interface.value));
+      }
+    } else {
+      if (!ecx::init(&context_, config_->primary_interface.value)) {
+        // TODO: switch for error_code
+        throw std::runtime_error(fmt::format("Failed to connect to interface: {}", config_->primary_interface.value));
+      }
     }
 
     if (!config_init(false)) {
@@ -245,7 +254,8 @@ private:
     wkc_ = processdata(microseconds{ 1000 });
     if (wkc_ < expected_wkc_ && wkc_ != last_wkc) {  // Don't wot over an already logged fault.
       last_cycle_with_sleep_ = std::chrono::high_resolution_clock::now() - cycle_start_with_sleep_;
-      logger_.warn("Working counter got {} expected {}, processdata recv took: {}", wkc_, expected_wkc_, last_cycle_with_sleep_);
+      logger_.warn("Working counter got {} expected {}, processdata recv took: {}", wkc_, expected_wkc_,
+                   last_cycle_with_sleep_);
     }
     while (ecx_iserror(&context_) != 0U) {
       logger_.error("Ethercat context error: {}", ecx_elist2string(&context_));
@@ -372,7 +382,8 @@ private:
   std::vector<devices::device<ipc_ruler::ipc_manager_client>> slaves_;
 
   // Stack allocations for pointers inside ec_contextt.
-  ecx_portt port_;
+  ecx_redportt redundant_port_data_{};
+  ecx_portt port_{};
   std::array<ec_slavet, ecx::constants::max_slave> slavelist_;
   int slave_count_ = 0;
   std::array<ec_groupt, ecx::constants::max_group> grouplist_;

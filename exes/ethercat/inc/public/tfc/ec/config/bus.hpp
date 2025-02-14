@@ -41,11 +41,13 @@ struct glz::detail::to_json_schema<tfc::ec::config::network_interface> {
 namespace tfc::ec::config {
 struct ethercat {
   network_interface primary_interface{ common::get_interfaces().at(0) };
+  std::optional<network_interface> redundant_interface{ std::nullopt };
   confman::observable<std::optional<std::size_t>> required_slave_count{ std::nullopt };
   std::chrono::microseconds cycle_time{ std::chrono::milliseconds{ 1 } };
   struct glaze {
     // clang-format off
     static constexpr auto value{ glz::object("primary_interface", &ethercat::primary_interface, "Primary interface",
+                                             "redundant_interface", &ethercat::redundant_interface, "Redundant interface",
                                              "required_slave_count", &ethercat::required_slave_count, "Required slave count",
                                              "cycle_time", &ethercat::cycle_time, "The scan time for the ethercat network, between each poll."
                                              ) };
