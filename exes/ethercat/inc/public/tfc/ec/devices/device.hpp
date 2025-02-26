@@ -12,6 +12,7 @@
 #include "beckhoff/EL2xxx.hpp"
 #include "beckhoff/EL3xxx.hpp"
 #include "beckhoff/EL4xxx.hpp"
+#include "beckhoff/EL9222.hpp"
 #include "beckhoff/EQ2339.hpp"
 #include "eilersen/4x60a.hpp"
 #include "schneider/atv320.hpp"
@@ -37,6 +38,7 @@ using devices_list = devices_type<
   beckhoff::eq2339<manager_client_t>,
   beckhoff::el3054,
   beckhoff::el4002,
+  beckhoff::el9222<manager_client_t>,
   schneider::atv320::device<manager_client_t>,
   schneider::lxm32m<manager_client_t>,
   eilersen::e4x60a::e4x60a<manager_client_t>
@@ -60,6 +62,7 @@ using device_variant = std::variant<abt::easyecat<manager_client_t>,
                                     beckhoff::eq2339<manager_client_t>,
                                     beckhoff::el3054,
                                     beckhoff::el4002,
+                                    beckhoff::el9222<manager_client_t>,
                                     schneider::atv320::device<manager_client_t>,
                                     schneider::lxm32m<manager_client_t>,
                                     eilersen::e4x60a::e4x60a<manager_client_t>,
