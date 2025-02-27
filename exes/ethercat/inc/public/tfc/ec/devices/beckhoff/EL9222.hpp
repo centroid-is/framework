@@ -53,8 +53,9 @@ public:
   void pdo_cycle(pdo_input const& in, pdo_output& out) {
     std::size_t index = 0;
     for (auto& out_channel : out.channel) {
-      out_channel.control_reset = reset_[index++].value().value_or(false);
-      out_channel.control_switch = true;
+      out_channel.control_reset = reset_[index].value().value_or(false);
+      out_channel.control_switch = switch_[index].value().value_or(false);
+      index++;
     }
     index = 0;
     for (auto& in_channel : in.channel) {
@@ -91,6 +92,13 @@ private:
                          "Reset Overcurrent protection channel 1", [](bool) {} },
     tfc::ipc::bool_slot{ ctx_, client_, fmt::format("el9222.s{}.channel_2.reset", this->slave_index_),
                          "Reset Overcurrent protection channel 2", [](bool) {} }
+  };
+
+  std::array<tfc::ipc::bool_slot, 2> switch_{
+    tfc::ipc::bool_slot{ ctx_, client_, fmt::format("el9222.s{}.channel_1.switch", this->slave_index_),
+                         "Switch Overcurrent protection channel 1", [](bool) {} },
+    tfc::ipc::bool_slot{ ctx_, client_, fmt::format("el9222.s{}.channel_2.switch", this->slave_index_),
+                         "Switch Overcurrent protection channel 2", [](bool) {} }
   };
 
   std::array<tfc::ipc::string_signal, 2> state_{
