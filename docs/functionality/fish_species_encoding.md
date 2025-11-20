@@ -55,7 +55,7 @@ Here is an example for the fish species `COD`
 ```
 Here is an example for the fish species `HAD`
 ```
-(26^2 * 7) + (26 * 0) + 3 = 473
+(26^2 * 7) + (26 * 0) + 3 = 4735
 ```
 
 ## Speciality markings
